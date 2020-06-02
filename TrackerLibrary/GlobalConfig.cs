@@ -23,12 +23,12 @@ namespace TrackerLibrary
                 SqlConnector sql = new SqlConnector();
                 Connection = sql;
             }
-            else if (db == DatabaseType.TextFile)
-            {
-                // TODO - CREATE the Text Connection
-                //TextConnector text = new TextConnector();
-                //Connection = text;
-            }
+            //else if (db == DatabaseType.TextFile)
+            //{
+            //    // TODO - CREATE the Text Connection
+            //    //TextConnector text = new TextConnector();
+            //    //Connection = text;
+            //}
         }
 
         public static string CnnString(string name)

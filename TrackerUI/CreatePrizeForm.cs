@@ -32,6 +32,7 @@ namespace TrackerUI
    
                 GlobalConfig.Connection.CreatePrize(model);
 
+                //Clearing form after click event
                 placeNameValue.Text = "";
                 placeNumberValue.Text = "";
                 prizeAmountValue.Text = "0";
