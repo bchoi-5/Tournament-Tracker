@@ -39,7 +39,9 @@ namespace TrackerUI
         {
             selectTeamMemberDropDown.DataSource = null;
 
+            // .DataSource binds dropdown with list directly
             selectTeamMemberDropDown.DataSource = availableTeamMembers;
+            // .DisplayMember is a string that represents ones property of the PersonModel
             selectTeamMemberDropDown.DisplayMember = "FullName";
 
             teamMembersListBox.DataSource = null;

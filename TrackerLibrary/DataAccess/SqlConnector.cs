@@ -95,5 +95,17 @@ namespace TrackerLibrary
 
             return output;
         }
+
+        public List<TeamModel> Teams_GetAll()
+        {
+            List<TeamModel> output;
+
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GlobalConfig.CnnString(db)))
+            {
+                output = connection.Query<TeamModel>("dbo.Teams_GetAll").ToList();
+            }
+
+            return output;
+        }
     }
 }
