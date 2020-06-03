@@ -96,6 +96,18 @@ namespace TrackerLibrary
             return output;
         }
 
+        public List<PrizeModel> Prizes_GetAll()
+        {
+            List<PrizeModel> output;
+
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GlobalConfig.CnnString(db)))
+            {
+                output = connection.Query<PrizeModel>("dbo.Prizes_GetAll").ToList();
+            }
+
+            return output;
+        }
+
         public List<TeamModel> Teams_GetAll()
         {
             List<TeamModel> output;
@@ -103,6 +115,14 @@ namespace TrackerLibrary
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GlobalConfig.CnnString(db)))
             {
                 output = connection.Query<TeamModel>("dbo.Teams_GetAll").ToList();
+
+                foreach(TeamModel team in output)
+                {
+                    var p = new DynamicParameters();
+                    p.Add("@TeamId", team.Id);
+
+                    team.TeamMembers = connection.Query<PersonModel>("dbo.TeamMembers_GetByTeam", p, commandType: CommandType.StoredProcedure).ToList();
+                }
             }
 
             return output;
