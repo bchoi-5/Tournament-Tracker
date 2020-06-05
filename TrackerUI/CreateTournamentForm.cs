@@ -12,7 +12,7 @@ using TrackerLibrary.Models;
 
 namespace TrackerUI
 {
-    public partial class CreateTournamentForm : Form, IPrizeRequester
+    public partial class CreateTournamentForm : Form, IPrizeRequester, ITeamRequester
     {
         private List<TeamModel> availableTeams = GlobalConfig.Connection.Teams_GetAll();
         private List<TeamModel> selectedTeams = new List<TeamModel>();
@@ -72,11 +72,11 @@ namespace TrackerUI
 
         private void removeSelectedPrizesButton_Click(object sender, EventArgs e)
         {
-            PrizeModel t = (PrizeModel)prizesListBox.SelectedItem;
+            PrizeModel p = (PrizeModel)prizesListBox.SelectedItem;
 
-            if (t != null)
+            if (p != null)
             {
-                selectedPrizes.Remove(t);
+                selectedPrizes.Remove(p);
 
                 WireUpLists();
             }
@@ -95,6 +95,50 @@ namespace TrackerUI
             // Take the PrizeModel and put it into list of selected prizes
             selectedPrizes.Add(model);
             WireUpLists();
+        }
+
+        public void TeamComplete(TeamModel model)
+        {
+            selectedTeams.Add(model);
+            WireUpLists();
+        }
+
+        private void createNewTeamLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            CreateTeamForm frm = new CreateTeamForm(this);
+            frm.Show();
+        }
+
+        private void createTournamentButton_Click(object sender, EventArgs e)
+        {
+            // Validate data
+            decimal fee = 0;
+
+            bool feeAcceptable = decimal.TryParse(entryFeeValue.Text, out fee);
+
+            if (!feeAcceptable)
+            {
+                MessageBox.Show("You need to enter a valid entry fee.", 
+                    "Invalid Fee", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Create our tournament model
+            TournamentModel tm = new TournamentModel();
+
+            tm.TournamentName = tournamentNameValue.Text;
+            tm.EntryFee = 0;
+
+            tm.Prizes = selectedPrizes;
+            tm.EnteredTeams = selectedTeams;
+
+            // Wire up our matchups
+            TournamentLogic.CreateRounds(tm);
+
+            // Create Tournament entry
+            // Create all of the prizes entries
+            // Create all of the team entries
+            GlobalConfig.Connection.CreateTournament(tm);
         }
     }
 }
