@@ -36,7 +36,7 @@ namespace TrackerLibrary
             {
                 foreach(MatchupModel match in previousRound)
                 {
-                    currMatchup.Entries.Add(new MatchupEntryModel { ParentMatchup = match,  });
+                    currMatchup.Entries.Add(new MatchupEntryModel { ParentMatchup = match});
 
                     if(currMatchup.Entries.Count > 1)
                     {
@@ -57,17 +57,17 @@ namespace TrackerLibrary
         private static List<MatchupModel> CreateFirstRound(int byes, List<TeamModel> teams)
         {
             List<MatchupModel> output = new List<MatchupModel>();
-            MatchupModel curr = new MatchupModel();
+            MatchupModel current = new MatchupModel();
 
             foreach (TeamModel team in teams)
-            {
-                curr.Entries.Add(new MatchupEntryModel { TeamCompeting = team });
+          {        
+                current.Entries.Add(new MatchupEntryModel { TeamCompeting = team });
 
-                if (byes > 0 || curr.Entries.Count > 1)
+                if (byes > 0 || current.Entries.Count > 1)
                 {
-                    curr.MatchupRound = 1;
-                    output.Add(curr);
-                    curr = new MatchupModel();
+                    current.MatchupRound = 1;
+                    output.Add(current);
+                    current = new MatchupModel();
 
                     if (byes > 0)
                     {
