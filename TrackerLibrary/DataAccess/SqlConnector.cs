@@ -275,7 +275,7 @@ namespace TrackerLibrary
                     {
                         p = new DynamicParameters();
                         p.Add("@MatchupId", m.Id);
-                        //Popuate Rounds
+
                         m.Entries = connection.Query<MatchupEntryModel>("MatchupEntries_GetByMatchup", p, commandType: CommandType.StoredProcedure).ToList();
 
                         //Populate each entry (2 models)
